@@ -1,0 +1,52 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct activity
+{
+ char *day;
+ int date;
+ char *desc;
+};
+struct activity *calendar;
+void create()
+{
+ calendar = (struct activity *)malloc(7*sizeof(struct activity));
+}
+void read()
+{
+ char ch, *day;
+ char dayname[7][10] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+ int i, start;
+ printf("Enter the starting date\n");
+ scanf("%d",&start);
+ getchar();
+ printf("\nEnter the day wise activity. (Press Enter for no activity)\n");
+ for(i=0;i<7;i++)
+ {
+ printf("%s \t%d :", dayname[i], start);
+ calendar[i].day=(char*)malloc(10);
+ strcpy(calendar[i].day,dayname[i]);
+ calendar[i].date=start++;
+ fgets(calendar[i].desc=(char*)malloc(30), 30, stdin);
+ }
+}
+void display()
+{
+ printf("-----------------------------------------\n");
+ printf("Week \t\tDate\tDescription\n");
+ printf("-----------------------------------------\n");
+ for(int i=0;i<7;i++)
+ {
+ printf("%s \t%d\t%s", calendar[i].day, calendar[i].date, calendar[i].desc);
+ }
+ printf("-----------------------------------------\n");
+}
+void main()
+{
+ printf("Creating calendar array\n");
+ create();
+ printf("\nReading information of week activities\n");
+ read();
+ printf("\nDisplaying activity information\n");
+ display();
+}
