@@ -1,0 +1,106 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#define max 10
+int top, s[max];
+push (int item)
+{
+ if (top == max - 1)
+ {
+ printf ("STACK OVERFLOW\n");
+ return;
+ }
+ else
+ {
+ top = top + 1;
+ s[top] = item;
+ }
+}
+pop ()
+{
+ int item;
+ if (top == -1)
+ {
+ printf ("STACK UNDERFLOW\n");
+ return;
+ }
+ else
+ {
+ item = s[top];
+ top = top - 1;
+ printf ("POPPED ELEMENT IS %d\n", item);
+ return item;
+ }
+}
+palindrome ()
+{
+ int i, num, n, rev = 0, rem = 0, item, count = 0;
+ printf ("ENTER THE NUMBER\n");
+ scanf ("%d", &n);
+ num = n;
+ while (n != 0)
+ {
+ rem = n % 10;
+ push (rem);
+ n = n / 10;
+ count++;
+ }
+ for (i = 0; i < count; i++)
+ {
+ item = pop ();
+ rev = item * pow (10, i) + rev;
+ }
+ if (num == rev)
+ {
+ printf ("GIVEN NUMBER IS PALINDROME\n", num);
+ }
+ else
+ {
+ printf ("GIVEN NUMBER IS NOT PALINDROME\n", num);
+ }
+}
+display ()
+{
+ int i;
+ if (top == -1)
+ {
+ printf ("STACK IS EMPTY\n");
+ return;
+ }
+ else
+ {
+ printf ("STACK ELEMENTS ARE\n");
+ for (i = top; i >= 0; i--)
+printf ("%d\n", s[i]);
+ }
+}
+main ()
+{
+ int c, item;
+ top = -1;
+ for (;;)
+ {
+ printf ("\n1 PUSH\n2 POP\n3 CHECK PALINDROME\n4 DISPLAY\n5 EXIT \n");
+ printf ("ENTER YOUR CHOICE\n");
+ scanf ("%d", &c);
+ switch (c)
+{
+case 1:
+ printf ("ENTER THE ELEMENT TO INSERT\n");
+ scanf ("%d", &item);
+ push (item);
+ break;
+case 2:
+ pop ();
+ break;
+case 3:
+ palindrome ();
+ break;
+case 4:
+ display ();
+ break;
+default:
+ exit (0);
+}
+ }
+}
