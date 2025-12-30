@@ -1,0 +1,165 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+struct node
+{
+int expo1,expo2,expo3,coeff;
+struct node *link;
+};
+typedef struct node *N;
+N insert(int i,int j1,int j2,int j3,N h)
+{
+N temp,cur;
+temp=(N)malloc(sizeof(struct node));
+temp->expo1=j1;
+temp->expo2=j2;
+temp->expo3=j3;
+temp->coeff=i;
+cur=h->link;
+while(cur->link!=h)
+cur=cur->link;
+cur->link=temp;
+temp->link=h;
+return h;
+}
+/**************************************/
+N readpoly(N h)
+{
+int a,b1,b2,b3,i;
+for(i=1;;i++)
+{
+printf("ENTER %d TERM\n",i);
+printf("ENTER COEFFICIENT or 999 (TO END POLYNOMIAL)\n");
+scanf("%d",&a);
+if(a==999)
+break;
+printf("ENTER EXPONENTS FOR X Y and Z \n");
+scanf("%d%d%d",&b1,&b2,&b3);
+h=insert(a,b1,b2,b3,h);
+}
+return h;
+}
+/**************************************/
+eval(N h )
+{
+N temp; 
+int x,y,z,a,b,i;
+double res=0;
+printf("\nENTER X Y and Z VALUES\n");
+scanf("%d%d%d",&x,&y,&z);
+temp=h->link;
+while(temp!=h)
+{
+res=res+temp->coeff*(pow(x,temp->expo1))*(pow(y,temp-
+>expo2))*(pow(z,temp->expo3));
+temp=temp->link;
+}
+printf("\nRESULTANT VALUE =%f",res);
+return;
+}
+/***************************************/
+N add(N h1,N h2,N h3)
+{
+N p1,p2;
+p1=h1->link;
+p2=h2->link;
+int e1,e2,e3,e4;
+while(p1!=h1&&p2!=h2)
+{
+if(p1->expo1==p2->expo1&&p1->expo2==p2->expo2&&p1->expo3==p2->expo3)
+{
+e1=p1->coeff+p2->coeff;
+e2=p1->expo1;
+e3=p1->expo2;
+e4=p1->expo3;
+h3=insert(e1,e2,e3,e4,h3);
+p1=p1->link;
+p2=p2->link;
+}
+else if(p1->expo1>p2->expo1)
+{
+e1=p1->coeff;
+e2=p1->expo1;
+e3=p1->expo2;
+e4=p1->expo3;
+h3=insert(e1,e2,e3,e4,h3);
+p1=p1->link;
+}
+else
+{
+e1=p2->coeff;
+e2=p2->expo1;
+e3=p2->expo2;
+e4=p2->expo3;
+h3=insert(e1,e2,e3,e4,h3);
+p2=p2->link;
+}
+}
+while(p1!=h1)
+{
+h3=insert(p1->coeff,p1->expo1,p1->expo2,p1->expo3,h3);
+p1=p1->link;
+}
+while(p2!=h2)
+{
+h3=insert(p2->coeff,p2->expo1,p2->expo2,p2->expo3,h3);
+p2=p2->link;
+}
+return h3;
+}
+/**********************************************/
+void display (N h)
+{
+N temp;
+if(h->link==h)
+{
+printf("NO ELEMENTS");
+return;
+}
+temp=h->link;
+while(temp!=h)
+{
+printf("%dX^%dY^%dZ^%d+",temp->coeff,temp->expo1,temp->expo2,temp-
+>expo3);
+temp=temp->link;
+}
+printf("\n");
+}
+/***********************************************************/
+main()
+{
+N h1,h2,h3,poly;
+int c,res;
+system("clear");
+h1=(N)malloc(sizeof(struct node));
+h1->link=h1;
+h2=(N)malloc(sizeof(struct node));
+h2->link=h2;
+h3=(N)malloc(sizeof(struct node));
+h3->link=h3;
+printf("ENTER FIRST POLYNOMIAL\n");
+h1=readpoly(h1);
+printf("ENTER SECOND POLYNOMIAL\n");
+h2=readpoly(h2);
+printf("\nFIRST POLYNOMIAL IS\n");
+display(h1);
+printf("\nSECOND POLYNOMIAL IS\n");
+display(h2);
+for(;;)
+{
+printf("\n1--> EVALUATE \n2--> SUM OF TWO POLYNOMIALS\n");
+printf("ENTER YOUR CHOICE\n");
+scanf("%d",&c);
+switch(c)
+{
+case 1 : eval(h1);
+ eval(h2);
+break;
+case 2: h3=add(h1,h2,h3);
+printf("RESULTANT POLYNOMIAL IS\n");
+ display(h3);
+ break;
+default: exit(0);
+}
+}
+}
