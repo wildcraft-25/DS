@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define maxsize 5
+int rear,front,count;
+ 
+insert(int q[])
+ {
+ int ele;
+ if(count==maxsize)
+ {
+ printf("QUEUE FULL\n");
+ return;
+ }
+ printf("ENTER THE ELEMENT TO INSERT\n");
+ scanf("%d",&ele);
+ rear=(rear+1)%maxsize;
+ q[rear]=ele;
+ count++;
+ }
+delete(int q[])
+{
+int ele;
+if(count==0)
+{
+ printf("QUEUE EMPTY\n");
+ return;
+} 
+ ele=q[front];
+ printf("ELEMENT DELETED=%d\n",ele);
+ front=(front+1)%maxsize;
+ count--;
+}
+display(int q[])
+{
+ int i,j;
+ if(count==0)
+ {
+ printf("QUEUE EMPTY\n");
+ return;
+ }
+ i=front;
+ printf("ELEMENTS IN QUEUE ARE\n");
+ for(j=0;j<count;j++)
+ {
+ printf("%d\n",q[i]);
+ i=(i+1)%maxsize;
+ }
+ }
+main()
+{
+int c,q[5];
+count=0,front=0;
+rear=-1;
+for(;;)
+{
+printf("1 INSERT\n2 DELETE\n3 DISPLAY\n4 EXIT\n");
+printf("ENTER YOUR CHOICE");
+scanf("%d",&c);
+switch(c)
+{
+ case 1:insert(q);
+ break;
+ case 2:delete(q);
+ break;
+ case 3:display(q);
+ break;
+ default:exit(0);
+}
+}
+}
