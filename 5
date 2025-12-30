@@ -1,0 +1,101 @@
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+#include<stdlib.h>
+int count=0,top;
+double op(char symb,double op1,double op2)
+{
+switch(symb)
+{
+case '+':return op1+op2;
+case '-':return op1-op2;
+ case '*':return op1*op2;
+case '$':return pow(op1,op2);
+case '^':return pow(op1,op2);
+case '/':return op1/op2;
+}
+}
+/*******************************************/
+ isdigit1(char symb)
+ {
+ return(symb>='0'&& symb<='9');
+ }
+/******************************************/
+ void push(double item,double s[])
+ {
+ top=top+1;
+ s[top]=item;
+ }
+/******************************************/
+ double pop(double s[])
+ {
+ double item;
+ item=s[top];
+ top=top-1;
+ return item;
+ }
+/****************************************/
+ eval(char postfix[],double s[])
+ {
+ char symb;
+ int i;
+ double op1,op2,res;
+ for(i=0;i<strlen(postfix);i++)
+ {
+ symb=postfix[i];
+ if(isdigit1(symb))
+ {
+ push(symb-'0',s);
+ }
+ else
+ {
+ op2=pop(s);
+ op1=pop(s);
+ res=op(symb,op1,op2);
+ push(res,s);
+ }
+ }
+ res=pop(s);
+ printf("RESULT=%f",res);
+ }
+/********************************************/
+tower(int n,int source,int temp,int dest)
+ {
+ 
+if(n==1)
+ {
+ printf("\nMOVE DISC 1 FROM %c TO %c",source,dest);
+ count++;
+ return;
+ }
+tower(n-1,source,dest,temp);
+printf("\n MOVE DISC %d FROM %c TO %c",n,source,dest);
+count++;
+tower(n-1,temp,source,dest);
+}
+/*************************************/
+main()
+{
+ top=-1;
+double s[20];
+int i,c,n;
+char postfix[10];
+ for(;;)
+ {
+ printf("\n1 EVALUATE SUFFIX EXPRESSION\n 2 TOWER OF HONAI\n");
+ printf("ENTER YOUR CHOICE\n");
+ scanf("%d",&c);
+ switch(c)
+ {
+ case 1:printf("ENTER SUFFIX/INFIX EXPRESSION\n");
+ scanf("%s",postfix);
+ eval(postfix,s);
+ break;
+ case 2:printf("ENTER NUMBER OF DISCS");
+ scanf("%d",&n);
+ tower(n,'a','b','c');
+ break;
+ default:exit(0);
+ }
+ }
+ }
